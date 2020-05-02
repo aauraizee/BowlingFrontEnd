@@ -1,10 +1,12 @@
 import React from 'react';
 
+import GameViewer from './components/GameViewer/GameViewer';
+
 class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>Bowling Tracker</h1>
+                <GameViewer />
             </div>
         )
     }
