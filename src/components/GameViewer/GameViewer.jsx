@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-
-import GameEntry from './GameEntry';
+import MaterialTable from 'material-table';
 
 import { fetchGameData, fetchFrameData } from '../../api';
 
@@ -11,7 +10,7 @@ const GameViewer = () => {
 
     useEffect(() => {
         const fetchGames = async () => {
-            const response = await fetchFrameData();
+            const response = await fetchGameData();
 
             setGameData(response);
         }
@@ -24,10 +23,20 @@ const GameViewer = () => {
     }
     return (
         <Fragment>
-            <h1>GameViewer</h1>
-            {gameData.map(game => (
-                <GameEntry key={game.frameId} data={game} />
-            ))}
+            <div style={{ maxWidth: '100%' }}>
+                <MaterialTable
+                    columns={[
+                        { title: 'Game Number', field: 'gameId' },
+                        { title: 'Game Score', field: 'totalScore' },
+                        { title: 'Player Number', field: 'playerId' }
+                    ]}
+                    data={gameData}
+                    title="Your Games"
+                    options={{
+                        emptyRowsWhenPaging: false
+                    }}
+                    />
+            </div>
         </Fragment> 
     )
 }
