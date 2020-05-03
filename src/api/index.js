@@ -2,9 +2,9 @@ import axios from 'axios';
 
 export const fetchGameData = async () => {
     try {
-        const response = await axios.get('https://localhost:44392/games');
+        const { data } = await axios.get('https://localhost:44392/games');
 
-        return response;
+        return Array.from(data);
     } catch (error) {
         console.log(error);
     }
@@ -12,9 +12,9 @@ export const fetchGameData = async () => {
 
 export const fetchFrameData = async () => {
     try {
-        const response = await axios.get('https://localhost:44392/frames');
-
-        return response;
+        const { data } = await axios.get('https://localhost:44392/frames');
+        
+        return Array.from(data);
     } catch (error) {
         console.log(error);
     }

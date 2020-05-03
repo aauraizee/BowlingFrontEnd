@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
-import { fetchGameData } from '../../api';
+import GameEntry from './GameEntry';
+
+import { fetchGameData, fetchFrameData } from '../../api';
 
 const GameViewer = () => {
 
+    const [gameData, setGameData] = useState( [] );
+    
+
     useEffect(() => {
         const fetchGames = async () => {
-            const response = await fetchGameData();
+            const response = await fetchFrameData();
 
-            console.log(response);
+            setGameData(response);
         }
 
         fetchGames();
     }, []);
 
-
+    if (gameData.length === 0) {
+        return "Loading...";
+    }
     return (
-        <h1>GameViewer</h1>
+        <Fragment>
+            <h1>GameViewer</h1>
+            {gameData.map(game => (
+                <GameEntry key={game.frameId} data={game} />
+            ))}
+        </Fragment> 
     )
 }
 
