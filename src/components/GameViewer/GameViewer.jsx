@@ -1,16 +1,22 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import MaterialTable from 'material-table';
 
 import { fetchGameData } from '../../api';
 
 const GameViewer = () => {
 
+    const history = useHistory();
+
     const [gameData, setGameData] = useState( [] );
-    const [selectedRow, setSelectedRow] = useState(null);
+    //const [selectedRow, setSelectedRow] = useState(null);
     
-    const handleRowClick = (evt, rowData) => {
-        // setSelectedRow({ rowData });
-        console.log("the row has been clicked")
+    const handleRowClick = (event, rowData) => {
+        history.push('/game', { data: rowData })
+    }
+
+    const handleDeleteGame = (event, rowData) => {
+        console.log("you want to delete this row?")
     }
 
     useEffect(() => {
@@ -47,7 +53,7 @@ const GameViewer = () => {
                         {
                             icon: 'delete',
                             tooltip: 'Delete Game',
-                            onClick: (event, rowData) => console.log("you want to delete this row?")
+                            onClick: handleDeleteGame
                         }
                     ]}
                     options={{
