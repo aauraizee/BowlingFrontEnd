@@ -1,12 +1,17 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import MaterialTable from 'material-table';
 
-import { fetchGameData, fetchFrameData } from '../../api';
+import { fetchGameData } from '../../api';
 
 const GameViewer = () => {
 
     const [gameData, setGameData] = useState( [] );
+    const [selectedRow, setSelectedRow] = useState(null);
     
+    const handleRowClick = (evt, rowData) => {
+        // setSelectedRow({ rowData });
+        console.log("the row has been clicked")
+    }
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -32,8 +37,25 @@ const GameViewer = () => {
                     ]}
                     data={gameData}
                     title="Your Games"
+                    onRowClick={handleRowClick}
+                    localization={{
+                        header : {
+                            actions: ''
+                        }
+                    }}
+                    actions={[
+                        {
+                            icon: 'delete',
+                            tooltip: 'Delete Game',
+                            onClick: (event, rowData) => console.log("you want to delete this row?")
+                        }
+                    ]}
                     options={{
-                        emptyRowsWhenPaging: false
+                        search: false,
+                        emptyRowsWhenPaging: false,
+                        actionsColumnIndex: -1,
+                        actionsCellStyle: { color: '#d42700' },
+                        headerStyle: { backgroundColor: '#d42700', color: 'white' }
                     }}
                     />
             </div>
