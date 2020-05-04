@@ -9,7 +9,6 @@ const GameViewer = () => {
     const history = useHistory();
 
     const [gameData, setGameData] = useState( [] );
-    //const [selectedRow, setSelectedRow] = useState(null);
     
     const handleRowClick = (event, rowData) => {
         history.push('/game', { data: rowData })

@@ -10,9 +10,9 @@ export const fetchGameData = async () => {
     }
 }
 
-export const fetchFrameData = async () => {
+export const fetchFrameData = async (id) => {
     try {
-        const { data } = await axios.get('https://localhost:44392/frames');
+        const { data } = await axios.get(`https://localhost:44392/frames?game=${id}`);
         
         return Array.from(data);
     } catch (error) {
