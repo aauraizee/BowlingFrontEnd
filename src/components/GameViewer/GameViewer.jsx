@@ -18,6 +18,10 @@ const GameViewer = () => {
         console.log("you want to delete this row?")
     }
 
+    const handleAddGame = (event, rowData) => {
+        history.push('/add')
+    }
+
     useEffect(() => {
         const fetchGames = async () => {
             const response = await fetchGameData();
@@ -53,6 +57,12 @@ const GameViewer = () => {
                             icon: 'delete',
                             tooltip: 'Delete Game',
                             onClick: handleDeleteGame
+                        },
+                        {
+                            icon: 'add',
+                            tooltip: 'Add Game',
+                            isFreeAction: true,
+                            onClick: handleAddGame
                         }
                     ]}
                     options={{
