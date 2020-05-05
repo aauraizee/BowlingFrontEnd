@@ -19,3 +19,13 @@ export const fetchFrameData = async (id) => {
         console.log(error);
     }
 }
+
+export const fetchShotsForFrameData = async (id) => {
+    try {
+        const { data } = await axios.get(`https://localhost:44392/shots?frame=${id}`);
+
+        return Array.from(data);
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -28,7 +28,7 @@ const FramesViewer = ({ data }) => {
         <Fragment>
             <Grid container spacing={2} justify="center">
             {frames.map((frame, index) => (
-                <Grid item xs={3}>
+                <Grid key={index} item xs={3}>
                     <FrameCard key={frame.frameId} data={frame} />
                 </Grid>
             ))}
