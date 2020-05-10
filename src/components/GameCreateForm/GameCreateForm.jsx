@@ -1,11 +1,16 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import FrameCreateForm from '../FrameCreateForm/FrameCreateForm';
 
+import {FrameObject} from '../FrameCreateForm/FrameObject';
+
 const GameCreateForm = () => {
 
-    const [frameInfo, setFrameInfo] = useState([]);
+    const [frameInfo, setFrameInfo] = useState([FrameObject]);
     const [shotInfo, setShotInfo] = useState([]);
     const [activeStep, setActiveStep] = useState(0);
+
+    const [currentFrame, setCurrentFrame] = useState()
+
 
     // useEffect(() => {
     //     for (let i = 1; i <= 10; i++) {
@@ -15,28 +20,18 @@ const GameCreateForm = () => {
     // }, []);
 
     const buildStepContent = () => {
-        switch(activeStep) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                return (<FrameCreateForm number={activeStep} onNext={handleNext} onBack={handleBack} />)    
-        }
+         return (<FrameCreateForm key={activeStep} frameInfoObject={frameInfo} number={activeStep} onNext={handleNext} onBack={handleBack} />)    
+        
     }
 
     const handleNext = (data) => {
-        if(frameInfo.some(frame => frame.num === data.num))
-            return true
-        else {
-            setFrameInfo([...frameInfo, data])
-            return true
-        }
+        // if(frameInfo.some(frame => frame.num === data.num))
+        //     return true
+        // else {
+        //     setFrameInfo([...frameInfo, data])
+        //     return true
+        // }
+        
             
     }
 

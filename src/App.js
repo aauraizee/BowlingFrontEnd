@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GameViewer from './components/GameViewer/GameViewer';
 import FramesViewer from './components/FramesViewer/FramesViewer';
 import GameCreateForm from './components/GameCreateForm/GameCreateForm';
+import FrameCreateForm from './components/FrameCreateForm/FrameCreateForm';
 
 // import { fetchData } from './api';
 
@@ -14,7 +15,7 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/" exact component={GameViewer} />
                     <Route path="/game" exact render={(props) => <FramesViewer {...props} />} />
-                    <Route path="/add" exact component={GameCreateForm} />
+                    <Route path="/add" exact component={FrameCreateForm} />
                 </Switch>
             </BrowserRouter>
         )

@@ -4,49 +4,86 @@ import { Card, CardContent, Typography, FormControl, InputLabel, Select, TextFie
 import { MobileStepper, Button } from '@material-ui/core';
 import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons'
 
+import {FrameObject} from '../FrameCreateForm/FrameObject';
+
 const FrameCreateForm = (props) => {
 
-    const { number } = props;
-
-    const [activeStep, setActiveStep] = useState(number)
+    const [activeStep, setActiveStep] = useState(0)
     const [frameType, setFrameType] = useState('')
-    const [frameData, setFrameData] = useState({ num: activeStep+1, type: frameType })
-
-    useEffect(() => {
-        if (frameType === 0) {
-            setFrameData({ num: activeStep+1, type: frameType, shot1: 10 })
-        } else if (frameType === 1 || frameType === 2) {
-            setFrameData({ num: activeStep+1, type: frameType, shot1: 0, shot2: 0, spareType: '' })
-        } else if (frameType === 3) {
-            setFrameData({ num: activeStep+1, type: frameType, shot1: 0, shot2: 0, shot3: 0 })
-        }
-        console.log('rerender')
-    }, [frameType]);
-
-    const handleSelectChange = (e) => {
-        setFrameType(e.target.value);
-    }
+    const [frameData, setFrameData] = useState([Object.assign({}, FrameObject)])
 
     const handleChange = (e) => {
-        setFrameData({
-            ...frameData,
-            [e.target.name]: e.target.value
-        })
+        var fd = frameData;
+        if(e.target.name === "type" && activeStep === 9) { return }
+        fd[activeStep][e.target.name] = e.target.value;
+
+        setFrameData([...frameData])
+
+        if(e.target.name === "type") {
+            if (activeStep === 9) { return }
+            setFrameType(e.target.value)
+        }
     }
 
+    const saveToLocal = () =>{
+        
+    }
+
+    const restoreFromLocal = () =>{
+
+    }
+    
     const handleNext = () => {
-        const frameAdded = props.onNext(frameData)
-        if(frameAdded) {
+        const currentFrameObject = frameData[activeStep]
+
+       if(currentFrameObject.type !== '') {
             setActiveStep((activeStep) => activeStep + 1)
-        }  
+
+            var alreadyCreated = (activeStep + 1) < frameData.length
+            if(!alreadyCreated) {
+                if(activeStep + 2 === 10) {
+                    setFrameData([...frameData, Object.assign({}, {
+                        num: activeStep + 2,
+                        type: 3,
+                        shot1: 0,
+                        shot2: 0,
+                        shot3: 0,
+                        spareType: ""
+                    })])
+                    setFrameType(3) 
+                } else {
+                    setFrameData([...frameData, Object.assign({}, {
+                        num: activeStep + 2,
+                        type: '',
+                        shot1: 0,
+                        shot2: 0,
+                        shot3: 0,
+                        spareType: ""
+                    })])
+                    setFrameType('') 
+                }
+            } else {
+                setFrameType(frameData[activeStep+1].type)
+            }            
+       }  
     }
 
     const handleBack = () => {
         setActiveStep((activeStep) => activeStep - 1)
+        const currentFrameObject = frameData[activeStep-1]
+        const typeOfFrame = currentFrameObject.type
+        setFrameType(typeOfFrame)
+
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("Submitting data")
     }
 
     const buildTextFields = (frameType) => {
-        switch (frameType) {
+        const currentFrameObject = frameData[activeStep]
+        switch (currentFrameObject.type) {
             case 0:
                 return (
                     <Grid item xs={12}>
@@ -57,13 +94,13 @@ const FrameCreateForm = (props) => {
                 return (
                     <Fragment>
                         <Grid item xs={6}>
-                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' onChange={handleChange} />
+                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' value={currentFrameObject.shot1} type='number' onChange={handleChange} />
                         </Grid>
                         <Grid item xs={6}>
                             <Typography variant='h6' align='center'>/</Typography>
                         </Grid> 
                         <Grid item xs={12}>
-                            <TextField id='spare-type' label="Enter Spare Type" margin='dense' name='spareType' onChange={handleChange} />
+                            <TextField id='spare-type' label="Enter Spare Type" margin='dense' name='spareType' value={currentFrameObject.spareType} onChange={handleChange} />
                         </Grid>   
                     </Fragment>
                 )
@@ -71,13 +108,13 @@ const FrameCreateForm = (props) => {
                 return (
                     <Fragment>
                         <Grid item xs={6}>
-                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' onChange={handleChange}  />
+                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' value={currentFrameObject.shot1} type='number' onChange={handleChange}  />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField id="shot-2" label="Shot 2" variant='outlined' margin='dense' name='shot2' onChange={handleChange} />
+                            <TextField id="shot-2" label="Shot 2" variant='outlined' margin='dense' name='shot2' value={currentFrameObject.shot2} type='number' onChange={handleChange} />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField id='spareType' label="Enter Spare Type" margin='dense' name='spareType' onChange={handleChange}>/</TextField>
+                            <TextField id='spareType' label="Enter Spare Type" margin='dense' name='spareType' value={currentFrameObject.spareType} onChange={handleChange}>/</TextField>
                         </Grid> 
                     </Fragment>
                 )
@@ -85,13 +122,13 @@ const FrameCreateForm = (props) => {
                 return (
                     <Fragment>
                         <Grid item xs={4}>
-                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' onChange={handleChange} />
+                            <TextField id="shot-1" label="Shot 1" variant='outlined' margin='dense' name='shot1' value={currentFrameObject.shot1} type='number' onChange={handleChange} />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField id="shot-2" label="Shot 2" variant='outlined' margin='dense' name='shot2' onChange={handleChange} />
+                            <TextField id="shot-2" label="Shot 2" variant='outlined' margin='dense' name='shot2' value={currentFrameObject.shot2} type='number' onChange={handleChange} />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField id="shot-3" label="Shot 3" variant='outlined' margin='dense' name='shot3' onChange={handleChange} />
+                            <TextField id="shot-3" label="Shot 3" variant='outlined' margin='dense' name='shot3' value={currentFrameObject.shot3} type='number' onChange={handleChange} />
                         </Grid>
                     </Fragment>
                 )
@@ -116,8 +153,9 @@ const FrameCreateForm = (props) => {
                             <Select 
                                 labelId="shot-type-select-label" 
                                 id="shot-type-select"
+                                name="type"
                                 value={frameType}
-                                onChange={handleSelectChange}
+                                onChange={handleChange}
                             >
                                 <MenuItem value={0}>Strike</MenuItem>
                                 <MenuItem value={1}>Spare</MenuItem>
@@ -147,7 +185,8 @@ const FrameCreateForm = (props) => {
             Back
             </Button>
         }
-    />
+        />
+        <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>Submit</Button>
     </Fragment>
     )
        
