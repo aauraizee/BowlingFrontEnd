@@ -9,7 +9,7 @@ import { FrameErrorObject } from '../FrameCreateForm/FrameErrorObject';
 
 const FrameCreateForm = (props) => {
 
-    const spareTypeRegex = RegExp('\b[0-9]+(\-[0-9]+)*(?!\-)\b')
+    const spareTypeRegex = /\b[0-9]+(\-[0-9]+)*(?!\-)\b/
 
     const [activeStep, setActiveStep] = useState(0)
     const [frameType, setFrameType] = useState('')
@@ -64,7 +64,12 @@ const FrameCreateForm = (props) => {
                     e.target.value === 3 && activeStep !== 9
                     ? "Only the 10th frame can be type Tenth"
                     : ""
-                break   
+                break
+            case "spareType":
+                fdErrors[activeStep][e.target.name] =
+                    spareTypeRegex.test(e.target.value)
+                    ? ""
+                    : "invalid"
         }
         setFrameErrorData([...frameErrorData])
 
